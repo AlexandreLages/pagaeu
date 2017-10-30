@@ -1,0 +1,24 @@
+<ion-view title="Login" id="page3">
+  <ion-content padding="true" class="has-header">
+    <center>
+      <img src="img/icone.png" style="height: 200px;">
+      <h2>PagaEu</h2>
+    </center>
+    <form class="list" ng-submit="logar(login)">
+      <ion-list>
+        <label class="item item-input item-floating-label">
+          <span class="input-label">Usuário</span>
+          <input type="text" placeholder="Usuário" ng-model="login.email">
+        </label>
+        <label class="item item-input item-floating-label" id="login-input2">
+          <span class="input-label">Senha</span>
+          <input type="password" placeholder="Senha" ng-model="login.senha">
+        </label>
+      </ion-list>
+      <div class="spacer" style="height: 40px;"></div>
+      <button type="submit" class="button button-balanced  button-block">Entrar</button>
+      
+      <a ui-sref="criarConta" id="login-button2" class="button button-calm  button-block">Criar Conta</a>
+    </form>
+  </ion-content>
+</ion-view>

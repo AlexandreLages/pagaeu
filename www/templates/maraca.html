@@ -1,0 +1,131 @@
+<ion-view title="{{contatoAtual.nome}}" id="page2">
+  <ion-nav-buttons side="left" class="has-header">
+    <button class="button button-icon" ng-click="openModal()">Pedir</button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right" class="has-header">
+    <button class="button button-icon">Pagar</button>
+  </ion-nav-buttons>
+  <ion-content padding="true" class="has-header">
+    <ion-refresher pulling-text="Puxe para atualizar" on-refresh="atualizarContato(contatoAtual.id)"></ion-refresher>
+    <ion-refresher pulling-text="Puxe para atualizar" on-refresh="atualizarTransacoes(usuarioLogado.id, contatoAtual.id)"></ion-refresher>
+    <div class="list card" id="maraca-card21">
+      <ion-item class="item-avatar positive" id="maraca-list-item12" ng-show="{{contatoAtual.saldo >= 0}}">
+        <img src="https://www.gravatar.com/avatar/">
+        <h2positive>{{contatoAtual.nome}}</h2positive>
+        <p>{{contatoAtual.email}}</p>
+        <p>{{contatoAtual.username}} - {{contatoAtual.telefone}}</p>
+        <p>Está devendo a você R$ {{contatoAtual.saldo}}</p>
+      </ion-item>
+
+      <ion-item class="item-avatar assertive" id="maraca-list-item12" ng-show="{{contatoAtual.saldo < 0}}">
+        <img src="https://www.gravatar.com/avatar/">
+        <h2positive>{{contatoAtual.nome}}</h2positive>
+        <p>{{contatoAtual.email}}</p>
+        <p>{{contatoAtual.username}} - {{contatoAtual.telefone}}</p>
+        <p>Você está devendo R$ {{contatoAtual.saldo * (-1)}}</p>
+      </ion-item>
+    </div>
+    <div class="list card" id="maraca-card23" ng-repeat="transacao in transacoes | orderBy : reverse">
+      <div class="item item-body" id="maraca-list-item-container6" ng-show="{{transacao.tipo == 0}}">
+        <div id="maraca-markdown11" class="show-list-numbers-and-dots" ng-show="{{transacao.saldoAnterior > 0}}">
+          <p style="color:#000000;">Você estava devendo
+            <strong>R$ {{transacao.saldoAnterior}}</strong>
+          </p>
+        </div>
+        <div id="maraca-markdown11" class="show-list-numbers-and-dots" ng-show="{{transacao.saldoAnterior <= 0}}">
+          <p style="color:#000000;">Estava te devendo
+            <strong>R$ {{transacao.saldoAnterior * (-1)}}</strong>
+          </p>
+        </div>
+        <div id="maraca-markdown12" class="show-list-numbers-and-dots">
+          <p style="color:#000000;">Você emprestou:
+            <strong>R$ {{transacao.valor}}</strong>
+          </p>
+        </div>
+        <div id="maraca-markdown17" class="show-list-numbers-and-dots" ng-show="{{transacao.saldoAtual <= 0}}">
+          <p style="color:#000000;">Passou a te dever
+            <strong>R$ {{transacao.saldoAtual * (-1)}}</strong>
+          </p>
+        </div>
+        <div id="maraca-markdown17" class="show-list-numbers-and-dots" ng-show="{{transacao.saldoAtual > 0}}">
+          <p style="color:#000000;">Você passou a dever
+            <strong>R$ {{transacao.saldoAtual}}</strong>
+          </p>
+        </div>
+        <ion-list id="maraca-list4">
+          <ion-item class="item-icon-left positive" id="maraca-list-item25">
+            <i class="icon ion-android-calendar"></i>Data: 17/03/2017</ion-item>
+        </ion-list>
+      </div>
+
+      <div class="item item-body" id="maraca-list-item-container6" ng-show="{{transacao.tipo == 1}}">
+        <div id="maraca-markdown11" class="show-list-numbers-and-dots" ng-show="{{transacao.saldoAnterior > 0}}">
+          <p style="color:#000000;">Você estava devendo
+            <strong>R$ {{transacao.saldoAnterior}}</strong>
+          </p>
+        </div>
+        <div id="maraca-markdown11" class="show-list-numbers-and-dots" ng-show="{{transacao.saldoAnterior <= 0}}">
+          <p style="color:#000000;">Estava te devendo
+            <strong>R$ {{transacao.saldoAnterior}}</strong>
+          </p>
+        </div>
+        <div id="maraca-markdown12" class="show-list-numbers-and-dots">
+          <p style="color:#000000;">Você pediu emprestado:
+            <strong>R$ {{transacao.valor}}</strong>
+          </p>
+        </div>
+        <div id="maraca-markdown17" class="show-list-numbers-and-dots" ng-show="{{transacao.saldoAtual <= 0}}">
+          <p style="color:#000000;">Passou a te dever
+            <strong>R$ {{transacao.saldoAtual}}</strong>
+          </p>
+        </div>
+        <div id="maraca-markdown17" class="show-list-numbers-and-dots" ng-show="{{transacao.saldoAtual > 0}}">
+          <p style="color:#000000;">Você passou a dever
+            <strong>R$ {{transacao.saldoAtual}}</strong>
+          </p>
+        </div>
+        <ion-list id="maraca-list4">
+          <ion-item class="item-icon-left positive" id="maraca-list-item25">
+            <i class="icon ion-android-calendar"></i>Data: 17/03/2017</ion-item>
+        </ion-list>
+      </div>
+    </div>
+  </ion-content>
+  <script id="my-modal-emprestimo.html" type="text/ng-template">
+      <ion-modal-view>
+        <ion-header-bar class="bar bar-header bar-calm">
+          <h1 class="title">Novo empréstimo</h1>
+          <button class="button button-clear button-primary" ng-click="modal.hide()">Cancel</button>
+        </ion-header-bar>
+        <ion-content class="padding">
+          <p>Quanto você deseja pedir emprestado para {{contatoAtual.nome}}?</p>
+          <div class="list">
+            <label class="item item-input">
+              <span class="input-label">Valor emprestado</span>
+              <input ng-model="valor" type="number">
+            </label>
+            <button class="button button-full button-energized" ng-click="realizarEmprestimo(valor, contatoAtual.id, usuarioLogado.id)">Pedir Emprestado</button>
+          </div>
+        </ion-content>
+      </ion-modal-view>
+    </script>
+
+    <script id="my-modal-pagamento.html" type="text/ng-template">
+      <ion-modal-view>
+        <ion-header-bar class="bar bar-header bar-calm">
+          <h1 class="title">Novo empréstimo</h1>
+          <button class="button button-clear button-primary" ng-click="modal.hide()">Cancel</button>
+        </ion-header-bar>
+        <ion-content class="padding">
+          <p>Quanto você deseja pedir emprestado para {{contatoAtual.nome}}?</p>
+          <div class="list">
+            <label class="item item-input">
+              <span class="input-label">Valor emprestado</span>
+              <input ng-model="valor" type="number">
+            </label>
+            <button class="button button-full button-energized" ng-click="realizarEmprestimo(valor, contatoAtual.id, usuarioLogado.id)">Pedir Emprestado</button>
+          </div>
+        </ion-content>
+      </ion-modal-view>
+    </script>
+</ion-view>

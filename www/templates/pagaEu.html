@@ -1,0 +1,49 @@
+<ion-view title="PagaEu" id="page1">
+  <ion-nav-buttons side="right" class="has-header">
+    <button ng-click="logout()" class="button">Sair</button>
+  </ion-nav-buttons>
+  <ion-content padding="true" class="has-header">
+  <ion-refresher pulling-text="Puxe para atualizar" on-refresh="atualizar(usuarioLogado.id)"></ion-refresher>
+  <div class="list card" id="maraca-card21">
+      <ion-item class="item-avatar positive" id="maraca-list-item12">
+        <img src="{{imagemUser}}">
+        <h2positive>{{usuarioLogado.nome}}</h2positive>
+        <p>{{usuarioLogado.email}}</p>
+      </ion-item>
+    </div>
+  <h5 style="color:#1749CC;">Add Contato</h5>
+    <form ng-submit="addContato(contato, usuarioLogado.id)">
+      <div class="list">
+        <div class="item item-input-inset">
+          <label class="item-input-wrapper">
+            <input type="text" placeholder="Username" ng-model="contato.username">
+          </label>
+          <button type="submit" class="button button-balanced  button-small">Add</button>
+        </div>
+      </div>  
+    </form>
+    
+
+    <h5 style="color:#1749CC;">Meus Contatos</h5>
+
+    <ion-list id="pagaEu-list2" class="manual-list-fullwidth">
+      <ion-item class="item-avatar positive" id="pagaEu-list-item7" ui-sref="maraca" ng-repeat="contato in contatosList" ng-click="salvarContato(contato)" ng-show="{{contato.saldo >= 0}}">
+        <img src="https://www.gravatar.com/avatar/">
+        <h2positive>{{contato.nome}}</h2>
+        <p>está devendo a você R$ {{contato.saldo}}</p>
+        <ion-option-button class="button-assertive" ng-click="deletarContato(contato)">
+          Delete
+        </ion-option-button>
+      </ion-item>
+
+      <ion-item class="item-avatar assertive" id="pagaEu-list-item7" ui-sref="maraca" ng-repeat="contato in contatosList" ng-click="salvarContato(contato)" ng-show="{{contato.saldo < 0}}">
+        <img src="https://www.gravatar.com/avatar/">
+        <h2positive>{{contato.nome}}</h2>
+        <p>você está devendo R$ {{contato.saldo * (-1)}}</p>
+        <ion-option-button class="button-assertive" ng-click="deletarContato(contato)">
+          Delete
+        </ion-option-button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
